@@ -37,12 +37,8 @@ jobs:
 
       - name: Generate changelog
         run: |
-          echo 'CHANGELOG_BODY<<EOF' >> $GITHUB_ENV
-          node ./scripts/release-changelog.mjs >> $GITHUB_ENV
-          echo 'EOF' >> $GITHUB_ENV
+          echo "::set-output name=changelog_body::$(node ./scripts/release-changelog.mjs)\n"
         id: changelog
-
-      - run: echo "$CHANGELOG_BODY"
 
       - name: Create Release for Tag
         id: release_tag
@@ -51,4 +47,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          body: ${{ env.CHANGELOG_BODY }}
+          body: ${{ steps.changelog.outputs.changelog_body }}

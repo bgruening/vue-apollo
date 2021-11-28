@@ -7,4 +7,7 @@ const result = await execa('./node_modules/.bin/conventional-changelog', [
   stdio: 'pipe',
 })
 
-console.log(result.stdout.split('\n').slice(2).join('\n'))
+console.log(result.stdout.split('\n').slice(2).join('\n').trim()
+  .replace(/\\/g, '\\\\')
+  .replace(/"/g, '\\"')
+  .replace(/\n/g, '\\\\n'))
