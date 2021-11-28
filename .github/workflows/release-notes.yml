@@ -47,4 +47,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.changelog_body }}
+          body: |
+            ${{ steps.changelog.outputs.changelog_body }}
