@@ -36,12 +36,13 @@ jobs:
         run: yarn --frozen-lockfile --prefer-offline 
 
       - name: Generate changelog
+        id: changelog
         run: |
-         body=$(node ./scripts/release-changelog.mjs)
-         body="${body//'%'/'%25'}"
-         body="${body//$'\n'/'%0A'}"
-         body="${body//$'\r'/'%0D'}"
-         echo "CHANGELOG_BODY=$body" >> $GITHUB_ENV
+         text=$(node ./scripts/release-changelog.mjs)
+         text="${text//'%'/'%25'}"
+         text="${text//$'\n'/'%0A'}"
+         text="${text//$'\r'/'%0D'}"
+         echo "::set-output name=body::$text"
         shell: bash
         
       - name: Create Release for Tag
@@ -52,4 +53,4 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           body: |
-            ${{ env.CHANGELOG_BODY }}
+            ${{ steps.changelog.outputs.body }}
