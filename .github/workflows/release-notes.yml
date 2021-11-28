@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@master
       - name: Generate changelog
         run: |
-          echo "::set-output name=changelog_body::node ./scripts/release-changelog.mjs"
+          echo "::set-output name=changelog_body::$(node ./scripts/release-changelog.mjs)\n"
         id: changelog
       - name: Create Release for Tag
         id: release_tag
