@@ -37,9 +37,13 @@ jobs:
 
       - name: Generate changelog
         run: |
-          echo "::set-output name=changelog_body::$(node ./scripts/release-changelog.mjs)\n"
-        id: changelog
-
+         body=$(node ./scripts/release-changelog.mjs)
+         body="${body//'%'/'%25'}"
+         body="${body//$'\n'/'%0A'}"
+         body="${body//$'\r'/'%0D'}"
+         echo "CHANGELOG_BODY=$body" >> $GITHUB_ENV
+        shell: bash
+        
       - name: Create Release for Tag
         id: release_tag
         uses: yyx990803/release-tag@master
@@ -48,4 +52,4 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           body: |
-            ${{ steps.changelog.outputs.changelog_body }}
+            ${{ env.CHANGELOG_BODY }}
