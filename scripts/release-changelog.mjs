@@ -1,0 +1,10 @@
+import { execa } from 'execa'
+
+const result = await execa('./node_modules/.bin/conventional-changelog', [
+  '-p', 'angular',
+  '-r', 2,
+], {
+  stdio: 'pipe',
+})
+
+console.log(result.stdout.split('\n').slice(2).join('\n'))
