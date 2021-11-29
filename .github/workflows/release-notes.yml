@@ -41,12 +41,6 @@ jobs:
       - name: Install
         run: yarn --frozen-lockfile --prefer-offline 
 
-      - name: Test command
-        run: ./node_modules/.bin/conventional-changelog -p angular -r 2
-
-      - name: Test changelog
-        run: node "./scripts/release-changelog.mjs"
-
       - name: Create Release for Tag
         id: release_tag
         uses: Akryum/release-tag@master
@@ -54,4 +48,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          body_command: node ./scripts/release-changelog.mjs
+          body_command: yarn conventional-changelog -p angular -r 2
